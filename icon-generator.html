@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator - Makhdoomiyya Academy</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        h1 {
+            color: #059669;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .canvas-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .icon-box {
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #047857;
+        }
+        .instructions {
+            background: #f9fafb;
+            border-left: 4px solid #059669;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #059669;
+        }
+        .color-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .color-btn {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .color-btn.active {
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+        .download-all {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .download-all button {
+            background: #10b981;
+            padding: 12px 30px;
+            font-size: 16px;
+        }
+        .download-all button:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Icon Generator for Makhdoomiyya Academy Cashbook</h1>
+        
+        <div class="instructions">
+            <h3>📱 Instructions:</h3>
+            <p>1. Choose your preferred color scheme below</p>
+            <p>2. Click "Download" under each icon size</p>
+            <p>3. Save the icons in your cashbook folder</p>
+            <p>4. These icons will be used when installing the app on mobile/desktop</p>
+        </div>
+
+        <div class="color-options">
+            <div class="color-btn active" style="background: #059669;" data-bg="#059669" data-text="white" title="Green (Default)"></div>
+            <div class="color-btn" style="background: #1f2937;" data-bg="#1f2937" data-text="white" title="Dark"></div>
+            <div class="color-btn" style="background: #3b82f6;" data-bg="#3b82f6" data-text="white" title="Blue"></div>
+            <div class="color-btn" style="background: #8b5cf6;" data-bg="#8b5cf6" data-text="white" title="Purple"></div>
+            <div class="color-btn" style="background: #ec4899;" data-bg="#ec4899" data-text="white" title="Pink"></div>
+            <div class="color-btn" style="background: #f59e0b;" data-bg="#f59e0b" data-text="white" title="Orange"></div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="icon-box">
+                <canvas id="canvas192" width="192" height="192"></canvas>
+                <button onclick="downloadIcon(192)">Download 192×192</button>
+            </div>
+            <div class="icon-box">
+                <canvas id="canvas512" width="512" height="512"></canvas>
+                <button onclick="downloadIcon(512)">Download 512×512</button>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="icon-box">
+                <h4>Favicon (32×32)</h4>
+                <canvas id="canvas32" width="32" height="32" style="width: 64px; height: 64px; image-rendering: pixelated;"></canvas>
+                <button onclick="downloadIcon(32)">Download Favicon</button>
+            </div>
+            <div class="icon-box">
+                <h4>Apple Touch (180×180)</h4>
+                <canvas id="canvas180" width="180" height="180"></canvas>
+                <button onclick="downloadIcon(180)">Download Apple Icon</button>
+            </div>
+        </div>
+
+        <div class="download-all">
+            <button onclick="downloadAll()">⬇ Download All Icons</button>
+        </div>
+
+        <div class="instructions" style="margin-top: 30px;">
+            <h3>✅ Next Steps:</h3>
+            <p>1. After downloading, rename the files to match these names:</p>
+            <ul>
+                <li><strong>icon-192.png</strong> - Main PWA icon</li>
+                <li><strong>icon-512.png</strong> - Large PWA icon</li>
+                <li><strong>favicon.ico</strong> - Browser tab icon (use the 32×32)</li>
+                <li><strong>apple-touch-icon.png</strong> - iOS home screen (use the 180×180)</li>
+            </ul>
+            <p>2. Place all icon files in the same folder as your index.html</p>
+            <p>3. The app is now ready to be installed as a PWA!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentBg = '#059669';
+        let currentText = 'white';
+
+        // Initialize color selection
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentBg = this.dataset.bg;
+                currentText = this.dataset.text;
+                drawAllIcons();
+            });
+        });
+
+        function drawIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background with rounded corners for larger icons
+            if (size >= 180) {
+                const radius = size * 0.1;
+                ctx.beginPath();
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(size - radius, 0);
+                ctx.quadraticCurveTo(size, 0, size, radius);
+                ctx.lineTo(size, size - radius);
+                ctx.quadraticCurveTo(size, size, size - radius, size);
+                ctx.lineTo(radius, size);
+                ctx.quadraticCurveTo(0, size, 0, size - radius);
+                ctx.lineTo(0, radius);
+                ctx.quadraticCurveTo(0, 0, radius, 0);
+                ctx.closePath();
+                ctx.fillStyle = currentBg;
+                ctx.fill();
+            } else {
+                ctx.fillStyle = currentBg;
+                ctx.fillRect(0, 0, size, size);
+            }
+            
+            // Add subtle gradient overlay for depth
+            if (size >= 192) {
+                const gradient = ctx.createLinearGradient(0, 0, 0, size);
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, size, size);
+            }
+            
+            // Text styling
+            ctx.fillStyle = currentText;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Adjust font size based on icon size
+            let fontSize = size * 0.35;
+            if (size === 32) fontSize = size * 0.4;
+            
+            ctx.font = `bold ${fontSize}px 'Inter', Arial, sans-serif`;
+            
+            // Add shadow for larger icons
+            if (size >= 180) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = size * 0.02;
+                ctx.shadowOffsetY = size * 0.01;
+            }
+            
+            // Draw text
+            ctx.fillText('MA', size / 2, size / 2);
+            
+            // Add subtitle for larger icons
+            if (size >= 512) {
+                ctx.shadowBlur = 0;
+                ctx.font = `${size * 0.06}px 'Inter', Arial, sans-serif`;
+                ctx.fillText('CASHBOOK', size / 2, size * 0.7);
+            }
+        }
+
+        function drawAllIcons() {
+            [32, 180, 192, 512].forEach(size => drawIcon(size));
+        }
+
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // Set appropriate filename
+                if (size === 32) {
+                    a.download = 'favicon-32.png';
+                } else if (size === 180) {
+                    a.download = 'apple-touch-icon-180.png';
+                } else {
+                    a.download = `icon-${size}.png`;
+                }
+                
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function downloadAll() {
+            const sizes = [32, 180, 192, 512];
+            let delay = 0;
+            
+            sizes.forEach(size => {
+                setTimeout(() => downloadIcon(size), delay);
+                delay += 200; // Small delay between downloads
+            });
+        }
+
+        // Draw icons on load
+        drawAllIcons();
+    </script>
+</body>
+</html>

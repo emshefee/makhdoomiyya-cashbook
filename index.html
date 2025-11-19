@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#059669">
+    <title>Makhdoomiyya Academy Cashbook</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="logo-section">
+                    <div class="logo-placeholder">MA</div>
+                    <h1>Makhdoomiyya Academy</h1>
+                    <p>Financial Management System</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="admin@makhdoomiyya.academy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div id="loginError" class="error-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Application -->
+    <div id="mainApp" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button id="menuToggle" class="menu-toggle">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <h2>Makhdoomiyya Academy Cashbook</h2>
+                </div>
+                <div class="header-right">
+                    <span id="syncStatus" class="sync-status">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.418A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 1a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H7.5V1.5A.5.5 0 0 1 8 1z"/>
+                        </svg>
+                        <span class="sync-text">Synced</span>
+                    </span>
+                    <button id="syncButton" class="btn btn-secondary">
+                        Sync to Drive
+                    </button>
+                    <div class="user-menu">
+                        <button id="userMenuToggle" class="user-menu-toggle">
+                            <span id="userInitials">MA</span>
+                        </button>
+                        <div id="userDropdown" class="user-dropdown">
+                            <div class="user-info">
+                                <span id="userName">Admin User</span>
+                                <span id="userEmail">admin@makhdoomiyya.academy</span>
+                            </div>
+                            <button id="logoutBtn" class="dropdown-item">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-page="dashboard">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-page="transactions">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Transactions</span>
+                </button>
+                <button class="nav-item" data-page="reports">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    <span>Reports</span>
+                </button>
+                <button class="nav-item" data-page="categories">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                    <span>Categories</span>
+                </button>
+                <button class="nav-item" data-page="settings">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Settings</span>
+                </button>
+            </nav>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page active">
+                <div class="page-header">
+                    <h3>Dashboard</h3>
+                    <button id="quickAddBtn" class="btn btn-primary">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                        </svg>
+                        Add Transaction
+                    </button>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card summary-card">
+                        <div class="card-icon income">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <p class="card-label">Total Income</p>
+                            <p class="card-value" id="totalIncome">₹0.00</p>
+                            <p class="card-change positive">+0% this month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <div class="card-icon expense">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1z"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <p class="card-label">Total Expenses</p>
+                            <p class="card-value" id="totalExpenses">₹0.00</p>
+                            <p class="card-change negative">-0% this month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <div class="card-icon balance">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <p class="card-label">Current Balance</p>
+                            <p class="card-value" id="currentBalance">₹0.00</p>
+                            <p class="card-change">Updated just now</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="card">
+                        <h4>Monthly Overview</h4>
+                        <canvas id="monthlyChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Category Distribution</h4>
+                        <canvas id="categoryChart" width="300" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="card">
+                    <h4>Recent Transactions</h4>
+                    <div id="recentTransactions" class="transactions-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Page -->
+            <div id="transactionsPage" class="page">
+                <div class="page-header">
+                    <h3>Transactions</h3>
+                    <div class="header-actions">
+                        <button id="filterBtn" class="btn btn-secondary">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
+                            </svg>
+                            Filter
+                        </button>
+                        <button id="exportBtn" class="btn btn-secondary">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                            Export
+                        </button>
+                        <button id="addTransactionBtn" class="btn btn-primary">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Add Transaction
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filter Panel -->
+                <div id="filterPanel" class="filter-panel">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>Date Range</label>
+                            <input type="date" id="startDate" class="form-control">
+                            <span>to</span>
+                            <input type="date" id="endDate" class="form-control">
+                        </div>
+                        <div class="filter-group">
+                            <label>Type</label>
+                            <select id="filterType" class="form-control">
+                                <option value="">All</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Category</label>
+                            <select id="filterCategory" class="form-control">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <button id="applyFilter" class="btn btn-primary">Apply</button>
+                        <button id="clearFilter" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+                
+                <!-- Transactions Table -->
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Transactions will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination controls will be added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reports Page -->
+            <div id="reportsPage" class="page">
+                <div class="page-header">
+                    <h3>Reports</h3>
+                    <div class="header-actions">
+                        <select id="reportPeriod" class="form-control">
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <button id="generateReport" class="btn btn-primary">Generate Report</button>
+                    </div>
+                </div>
+                
+                <div id="reportContent" class="report-content">
+                    <!-- Report content will be generated here -->
+                </div>
+            </div>
+            
+            <!-- Categories Page -->
+            <div id="categoriesPage" class="page">
+                <div class="page-header">
+                    <h3>Categories</h3>
+                    <button id="addCategoryBtn" class="btn btn-primary">Add Category</button>
+                </div>
+                
+                <div class="categories-grid">
+                    <div class="card">
+                        <h4>Income Categories</h4>
+                        <ul id="incomeCategories" class="category-list">
+                            <!-- Income categories will be populated here -->
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Expense Categories</h4>
+                        <ul id="expenseCategories" class="category-list">
+                            <!-- Expense categories will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page">
+                <div class="page-header">
+                    <h3>Settings</h3>
+                </div>
+                
+                <div class="card">
+                    <h4>Institution Details</h4>
+                    <form id="institutionForm">
+                        <div class="form-group">
+                            <label>Institution Name</label>
+                            <input type="text" id="institutionName" class="form-control" value="Makhdoomiyya Academy" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Fiscal Year Start</label>
+                            <select id="fiscalYear" class="form-control">
+                                <option value="January">January</option>
+                                <option value="April">April</option>
+                                <option value="July">July</option>
+                                <option value="October">October</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <select id="currency" class="form-control">
+                                <option value="INR">INR (₹)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h4>Google Drive Integration</h4>
+                    <div class="drive-settings">
+                        <button id="connectDrive" class="btn btn-primary">Connect Google Drive</button>
+                        <div id="driveStatus" class="drive-status"></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h4>User Management</h4>
+                    <div id="usersList" class="users-list">
+                        <!-- Users will be populated here -->
+                    </div>
+                    <button id="addUserBtn" class="btn btn-secondary">Add User</button>
+                </div>
+                
+                <div class="card">
+                    <h4>Data Management</h4>
+                    <div class="data-actions">
+                        <button id="backupData" class="btn btn-secondary">Backup Data</button>
+                        <button id="restoreData" class="btn btn-secondary">Restore Data</button>
+                        <button id="clearData" class="btn btn-danger">Clear All Data</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modals -->
+    <!-- Transaction Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modalTitle">Add Transaction</h4>
+                <button class="modal-close" onclick="closeModal('transactionModal')">&times;</button>
+            </div>
+            <form id="transactionForm" class="modal-body">
+                <input type="hidden" id="transactionId">
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="transactionDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Type *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="transactionType" value="income" required>
+                            <span>Income</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="transactionType" value="expense" required>
+                            <span>Expense</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Amount *</label>
+                    <input type="number" id="transactionAmount" class="form-control" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Category *</label>
+                    <select id="transactionCategory" class="form-control" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <input type="text" id="transactionDescription" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="paymentMethod" class="form-control">
+                        <option value="cash">Cash</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="cheque">Cheque</option>
+                        <option value="upi">UPI</option>
+                        <option value="card">Card</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Reference Number</label>
+                    <input type="text" id="referenceNumber" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" id="transactionTags" class="form-control" placeholder="e.g., monthly, utilities">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('transactionModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Transaction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h4>Add Category</h4>
+                <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
+            </div>
+            <form id="categoryForm" class="modal-body">
+                <input type="hidden" id="categoryId">
+                <div class="form-group">
+                    <label>Category Name *</label>
+                    <input type="text" id="categoryName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Type *</label>
+                    <select id="categoryType" class="form-control" required>
+                        <option value="">Select Type</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Color</label>
+                    <input type="color" id="categoryColor" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('categoryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h4>Add User</h4>
+                <button class="modal-close" onclick="closeModal('userModal')">&times;</button>
+            </div>
+            <form id="userForm" class="modal-body">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="userFullName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="userEmailAddress" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" id="userPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Role *</label>
+                    <select id="userRole" class="form-control" required>
+                        <option value="viewer">Viewer (Read Only)</option>
+                        <option value="admin">Admin (Full Access)</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('userModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="google-drive-sync.js"></script>
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => console.log('SW registered'))
+                .catch(error => console.log('SW registration failed:', error));
+        }
+    </script>
+</body>
+</html>

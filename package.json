@@ -1,0 +1,39 @@
+{
+  "name": "makhdoomiyya-academy-cashbook",
+  "version": "1.0.0",
+  "description": "Progressive Web App for financial management at Makhdoomiyya Academy",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -c-1",
+    "serve": "python -m http.server 8000",
+    "dev": "live-server --port=8000",
+    "build": "echo 'No build required - static files only'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "cashbook",
+    "financial",
+    "management",
+    "pwa",
+    "education",
+    "academy"
+  ],
+  "author": "Makhdoomiyya Academy",
+  "license": "Private",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/makhdoomiyya-cashbook.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead"
+  ]
+}
