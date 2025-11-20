@@ -3,8 +3,8 @@
 
 const GoogleDriveSync = {
     // Configuration
-    CLIENT_ID: 408203003534-6le0drk511u41rho0ehsmne9scvtvqbt.apps.googleusercontent.com // Replace with your Client ID
-    API_KEY: AIzaSyCJsCxpyCtrT8KjVAkAaD66QS2-tk4SJRg // Replace with your API Key
+    CLIENT_ID: // Replace with your Client ID
+    API_KEY: // Replace with your API Key
     DISCOVERY_DOCS: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
     SCOPES: 'https://www.googleapis.com/auth/drive.file',
     
